@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../i18n';
+---
+<Base lang="bg" page="home">
+  <article class="page page-860" style="gap:24px">
+    <span class="eyebrow">404</span>
+    <h1 class="h-page">Тази страница не съществува.</h1>
+    <p class="lead">This page doesn’t exist. <a href={href('bg', 'home')}>Към началото</a> · <a href={href('en', 'home')}>Home</a></p>
+  </article>
+</Base>

@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import editions from '../data/editions.json';
+import { T, pub, type Lang } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = T[lang];
+const bg = lang === 'bg';
+
+// Newest first, whatever order the JSON is in (dates are DD.MM.YYYY).
+const key = (d: string) => d.split('.').reverse().join('');
+const list = [...editions].sort((a, b) => key(b.date).localeCompare(key(a.date)));
+---
+<Base lang={lang} page="otchet">
+  <article class="page page-1120 reports">
+    <div class="intro">
+      <span class="eyebrow">{t.navReports}</span>
+      <h1 class="h-page">{bg ? 'Всяко издание, всяко дарение.' : 'Every edition, every donation.'}</h1>
+      <p class="lead" style="max-width:56ch">{bg
+        ? 'Тук публикуваме резултатите от всяко издание: къде бяхме, колко събрахме, на коя организация дарихме и документа, който потвърждава дарението.'
+        : 'This is where we publish the results of every edition: where we were, how much we raised, which charity we donated to, and the document that confirms the donation.'}</p>
+    </div>
+
+    <div class="editions">
+      <span class="eyebrow">{t.editions}</span>
+      <div class="list">
+        {list.map((e, i) => (
+          <div class="item">
+            <button type="button" class="acc-btn h-q row" aria-expanded="false" aria-controls={`ed-${i}`} data-acc>
+              <span class="date">{e.date}</span>
+              <span>{e.amount[lang]}</span>
+              <span class="sign" aria-hidden="true">+</span>
+            </button>
+            <div class="panel" id={`ed-${i}`} hidden>
+              <dl>
+                <dt>{t.fDate}</dt><dd>{e.date}</dd>
+                <dt>{t.fPlace}</dt><dd>{e.place[lang]}</dd>
+                <dt>{t.fAmount}</dt><dd>{e.amount[lang]}</dd>
+                <dt>{t.fCharity}</dt>
+                <dd><a href={e.charityUrl} target="_blank" rel="noopener" style="text-underline-offset:3px">{e.charity[lang]} ↗</a></dd>
+              </dl>
+              <div class="proof">
+                <span class="dt">{t.fProof}</span>
+                <a class="cert" href={pub(e.certificate)} target="_blank" rel="noopener">
+                  <img src={pub(e.certificate)} alt={e.certificateAlt[lang]} loading="lazy" decoding="async">
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="note">{bg
+        ? 'Резултатите от следващите издания ще бъдат публикувани тук.'
+        : 'Results from future editions will be published here.'}</p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .reports { gap: clamp(40px, 5cqw, 64px); }
+  .intro { display: flex; flex-direction: column; gap: 24px; max-width: 760px; }
+  .editions { display: flex; flex-direction: column; gap: 16px; }
+  .list { border-top: 1.5px solid var(--ink); }
+  .item { border-bottom: 1px solid var(--line-3); }
+  .row { align-items: baseline; gap: 24px; padding: 22px 0; }
+  .date { flex: 1; }
+  .sign { width: 20px; text-align: right; }
+  .panel {
+    padding: 8px 0 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px 48px;
+  }
+  dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 16px 28px; align-content: start; }
+  dt, .dt { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+  dt { padding-top: 3px; }
+  dd { margin: 0; font-size: 18px; }
+  .proof { display: flex; flex-direction: column; gap: 10px; }
+  .cert { display: block; border: 1px solid var(--line-2); border-radius: 4px; overflow: hidden; background: #fff; }
+  .cert img { display: block; width: 100%; height: auto; }
+  .note { margin: 8px 0 0; font-size: 15px; border-top: 1px solid var(--line-2); padding-top: 16px; }
+</style>
+
+<script>
+  import { initAccordions } from '../scripts/accordion';
+  initAccordions();
+</script>

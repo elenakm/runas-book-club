@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import logoRing from '../assets/logo-ring.png';
+import logoFace from '../assets/logo-face.png';
+import { T, href, type Lang } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = T[lang];
+const bg = lang === 'bg';
+
+const steps = bg
+  ? ['Дари прочетените книги', 'Ние ги опаковаме красиво', 'Гостуваме на местни събития с щанд', 'Книгите намират нов дом срещу дарения', 'Всички събрани средства отиват за местни благотворителни организации']
+  : ['Donate the books you’ve read', 'We wrap them beautifully', 'We visit local events with a stall', 'The books find a new home in exchange for donations', 'All funds raised go to local charities'];
+
+const faqLinks = bg
+  ? ['Регистрирана благотворителна организация ли сте?', 'Къде отиват даренията?', 'Какви книги можеш да дариш?']
+  : ['Are you a registered charity?', 'Where do the donations go?', 'What books can you donate?'];
+---
+<Base lang={lang} page="home">
+  <section class="hero">
+    <div class="hero-row">
+      <h1 class="hero-title">
+        <span>{t.tagline1}</span>
+        <span class="l2">{t.tagline2}</span>
+      </h1>
+      <div class="hero-logo">
+        <div class="logo">
+          <Image src={logoRing} alt="" widths={[414, 828]} sizes="clamp(161px, 34.5vw, 414px)" class="ring" loading="eager" fetchpriority="high" />
+          <Image src={logoFace} alt="Runa’s Book Club" widths={[414, 828]} sizes="clamp(161px, 34.5vw, 414px)" loading="eager" />
+        </div>
+      </div>
+    </div>
+    <p class="lead hero-lead">
+      {bg
+        ? 'Runa’s Book Club е благотворителен клуб, който организира срещи на сляпо с книги втора ръка. Виждаш само жанра и настроението, избираш по усещане и даряваш колкото решиш. Всички набрани средства отиват за местни благотворителни организации.'
+        : 'Runa’s Book Club is a charity club that sets up blind dates with secondhand books. You see only the genre and the vibe, choose intuitively, and make a donation of your choice. All proceeds go to local charities.'}
+    </p>
+  </section>
+
+  <section class="steps-wrap">
+    <ol class="steps">
+      {steps.map((s, i) => (
+        <li><span class="num">{String(i + 1).padStart(2, '0')}</span><span>{s}</span></li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="cards">
+    <div class="card-dark">
+      <span class="eyebrow">{t.navReports}</span>
+      <h2 class="h-section">{bg ? 'Всяко издание, всяко дарение.' : 'Every edition, every donation.'}</h2>
+      <p>{bg
+        ? 'След всяко издание публикуваме колко сме събрали, на коя организация сме дарили и документ за дарението.'
+        : 'After each edition we publish how much we raised, which charity received it, and the donation certificate.'}</p>
+      <a class="pill" href={href(lang, 'otchet')}>{t.seeReports} →</a>
+    </div>
+    <div class="card-outline card-faq">
+      <span class="eyebrow">{t.faqShort}</span>
+      {faqLinks.map((q) => <a class="faq-link" href={href(lang, 'faq')}>{q}</a>)}
+      <a class="all-q" href={href(lang, 'faq')}>{t.allQuestions} →</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7cqw, 104px) var(--gutter) 0;
+    display: flex; flex-direction: column; gap: clamp(36px, 4cqw, 52px); position: relative; z-index: 1;
+  }
+  .hero-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: clamp(16px, 3cqw, 32px); }
+  .hero-title {
+    font-weight: 500; font-size: clamp(36px, 7.4cqw, 104px); line-height: 1; letter-spacing: -0.03em;
+    margin: 0; max-width: 11ch; text-wrap: balance;
+  }
+  .hero-title span { display: block; }
+  .hero-title .l2 { margin-top: .33em; }
+  .hero-logo {
+    justify-self: end; margin-right: clamp(-48px, -2cqw, 0px);
+    position: absolute; right: min(64px, 5cqw); top: min(237px, 19.75cqw);
+  }
+  .logo {
+    position: relative; width: clamp(161px, 34.5cqw, 414px); height: clamp(161px, 34.5cqw, 414px);
+    flex: none; border-radius: 50%; overflow: hidden;
+  }
+  .logo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .logo :global(.ring) { animation: runa-spin 48s linear infinite; will-change: transform; }
+  @keyframes runa-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .logo :global(.ring) { animation: none; } }
+  .hero-lead { max-width: 44ch; }
+
+  @media (max-width: 759.98px) {
+    .hero-row { grid-template-columns: minmax(0, 1fr); }
+    .hero-logo { position: static; }
+  }
+
+  .steps-wrap { max-width: 1200px; margin: 0 auto; padding: clamp(40px, 5cqw, 72px) var(--gutter) clamp(56px, 7cqw, 96px); }
+  .steps { list-style: none; padding: 0; display: flex; flex-direction: column; max-width: 640px; margin: 0 auto; }
+  .steps li {
+    display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 22px 0;
+    border-top: 1px solid var(--line-2); font-size: 22px; font-weight: 500;
+  }
+  .steps li:last-child { border-bottom: 1px solid var(--line-2); }
+  .steps .num { font-size: 15px; padding-top: 5px; }
+
+  .cards {
+    max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter) clamp(56px, 7cqw, 96px);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 20px;
+  }
+  .card-dark {
+    background: var(--ink); color: var(--cream); border-radius: 4px; padding: clamp(28px, 4cqw, 48px);
+    display: flex; flex-direction: column; gap: 18px; align-items: flex-start;
+  }
+  .card-dark p { margin: 0; max-width: 44ch; }
+  .pill {
+    margin-top: 8px; padding: 13px 22px; border-radius: 999px; background: var(--cream); color: var(--ink);
+    text-decoration: none; font-weight: 500;
+  }
+  .pill:hover { color: var(--ink); }
+  .pill:focus-visible { outline-color: var(--cream); }
+  .card-faq { padding: clamp(28px, 4cqw, 48px); display: flex; flex-direction: column; gap: 6px; }
+  .card-faq .eyebrow { margin-bottom: 12px; }
+  .faq-link { text-decoration: none; font-weight: 500; font-size: 19px; padding: 14px 0; border-bottom: 1px solid var(--line-2); }
+  .all-q { margin-top: 18px; font-weight: 500; }
+</style>

@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import { T, IG, type Lang } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = T[lang];
+const bg = lang === 'bg';
+
+const cards = bg
+  ? [
+      { h: 'Дари книга', p: 'Ако желаеш да дариш книги, пиши ни в Инстаграм. Даренията се извършват с лично предаване в рамките на град Бургас.' },
+      { h: 'Покани ни на събитие', p: 'Организираш събитие или имаш местен бизнес? Можем да гостуваме с щанд. Пиши ни в Instagram.' },
+    ]
+  : [
+      { h: 'Donate a book', p: "If you'd like to donate books, message us on Instagram. Donations are handed over in person within Burgas." },
+      { h: 'Invite us to an event', p: 'Running an event or a local business? We can come along with a stall. Send us a message on Instagram.' },
+    ];
+---
+<Base lang={lang} page="contact">
+  <article class="page page-1120 contact">
+    <div class="intro">
+      <span class="eyebrow">{t.navContact}</span>
+      <h1 class="h-page" style="text-wrap:wrap">{bg ? 'Включи се' : 'Get involved'}</h1>
+    </div>
+    <div class="cards">
+      {cards.map((c) => (
+        <div class="card-outline card">
+          <h2>{c.h}</h2>
+          <p>{c.p}</p>
+        </div>
+      ))}
+    </div>
+    <div class="ig-wrap">
+      <a class="ig" href={IG} target="_blank" rel="noopener">
+        <span>{bg ? 'Пиши ни в Instagram:' : 'Message us on Instagram:'}</span><span>@runas.bookclub</span>
+      </a>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .contact { gap: clamp(40px, 5cqw, 64px); }
+  .intro { display: flex; flex-direction: column; gap: 24px; max-width: 760px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+  .card { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
+  .card h2 { font-weight: 500; font-size: 26px; line-height: 1.2; margin: 0; }
+  .card p { margin: 0; font-size: 18px; }
+  .ig-wrap { display: flex; flex-direction: column; border-top: 1px solid var(--line-3); }
+  .ig {
+    text-decoration: none; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; padding: 26px 0;
+    border-bottom: 1px solid var(--line-3); font-weight: 500; font-size: clamp(24px, 3cqw, 36px);
+  }
+</style>

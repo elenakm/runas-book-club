@@ -1,0 +1,126 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import catFace from '../assets/cat-face.png';
+import { T, META, NAV_LABEL, IG, href, pub, type Lang, type Page } from '../i18n';
+
+interface Props { lang: Lang; page: Page; }
+const { lang, page } = Astro.props;
+const t = T[lang];
+const other: Lang = lang === 'bg' ? 'en' : 'bg';
+const meta = META[lang][page];
+const abs = (p: string) => new URL(p, Astro.site).href;
+const canonical = abs(href(lang, page));
+const navPages = ['story', 'otchet', 'faq', 'contact'] as const;
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{meta.title}</title>
+  <meta name="description" content={meta.description}>
+  <link rel="canonical" href={canonical}>
+  <link rel="alternate" hreflang="bg" href={abs(href('bg', page))}>
+  <link rel="alternate" hreflang="en" href={abs(href('en', page))}>
+  <link rel="alternate" hreflang="x-default" href={abs(href('bg', page))}>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Runa’s Book Club">
+  <meta property="og:title" content={meta.title}>
+  <meta property="og:description" content={meta.description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={abs(pub('og.png'))}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content={lang === 'bg' ? 'bg_BG' : 'en_GB'}>
+  <meta property="og:locale:alternate" content={lang === 'bg' ? 'en_GB' : 'bg_BG'}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#fcfbf1">
+  <link rel="icon" type="image/png" sizes="32x32" href={pub('favicon-32.png')}>
+  <link rel="icon" type="image/png" sizes="16x16" href={pub('favicon-16.png')}>
+  <link rel="apple-touch-icon" sizes="180x180" href={pub('apple-touch-icon.png')}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
+  <slot name="head" />
+</head>
+<body>
+<div class="root">
+  <a class="skip" href="#main">{lang === 'bg' ? 'Към съдържанието' : 'Skip to content'}</a>
+  <header class="site-header">
+    <div class="header-row">
+      <a href={href(lang, 'home')} class="header-logo" aria-label="Runa’s Book Club">
+        <Image src={catFace} alt="Runa’s Book Club" width={48} height={48} densities={[1, 2]} loading="eager" />
+      </a>
+      <nav class="nav-desktop" aria-label={lang === 'bg' ? 'Основна навигация' : 'Main navigation'}>
+        {navPages.map((p) => (
+          <a href={href(lang, p)} aria-current={p === page ? 'page' : undefined}>{NAV_LABEL[lang][p]}</a>
+        ))}
+      </nav>
+      <span class="nav-spacer"></span>
+      <div class="lang">
+        <span aria-hidden="true">БГ</span>
+        <a class="switch" id="lang-switch" role="switch" aria-checked={lang === 'en' ? 'true' : 'false'}
+           aria-label="English / Български" href={href(other, page)} hreflang={other}>
+          <span class="switch-knob"></span>
+        </a>
+        <span aria-hidden="true">EN</span>
+      </div>
+      <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="mobile-menu" aria-label={t.menuLabel}>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-menu" id="mobile-menu" hidden aria-label={t.menuLabel}>
+      {navPages.map((p) => (
+        <a href={href(lang, p)} aria-current={p === page ? 'page' : undefined}>{NAV_LABEL[lang][p]}<span class="dot" aria-hidden="true">●</span></a>
+      ))}
+    </nav>
+  </header>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-row">
+      <div class="footer-brand">
+        <Image src={catFace} alt="" width={40} height={40} densities={[1, 2]} />
+        <div>
+          <strong>Runa’s Book Club</strong>
+          <span>{t.tagline1}<br>{t.tagline2}</span>
+        </div>
+      </div>
+      <a class="footer-ig" href={IG} target="_blank" rel="noopener" aria-label="Instagram @runas.bookclub">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="currentColor"></rect><circle cx="12" cy="12" r="4.2" fill="none" stroke="#fcfbf1" stroke-width="1.8"></circle><circle cx="17.3" cy="6.7" r="1.1" fill="#fcfbf1"></circle></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const burger = document.getElementById('burger')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const setMenu = (open: boolean) => {
+    burger.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+  };
+  burger.addEventListener('click', () => setMenu(menu.hidden));
+  menu.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) setMenu(false); });
+  window.matchMedia('(max-width: 759.98px)').addEventListener('change', () => setMenu(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); burger.focus(); } });
+
+  // Let the switch knob slide before the page changes language.
+  const sw = document.getElementById('lang-switch') as HTMLAnchorElement;
+  sw.addEventListener('click', (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    e.preventDefault();
+    sw.setAttribute('aria-checked', sw.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+    setTimeout(() => { location.href = sw.href; }, 200);
+  });
+  window.addEventListener('pageshow', (e) => {
+    // Restore the switch state when the page comes back from the back/forward cache.
+    if (e.persisted) sw.setAttribute('aria-checked', document.documentElement.lang === 'en' ? 'true' : 'false');
+  });
+</script>
+</body>
+</html>

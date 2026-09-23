@@ -1,0 +1,14 @@
+[
+  {
+    "date": "20.09.2026",
+    "place": { "bg": "Морска градина Бургас поп-ъп щанд", "en": "Sea Garden Burgas, pop-up stall" },
+    "amount": { "bg": "70 евро", "en": "€70" },
+    "charity": { "bg": "Фондация Спаси Коте Бургас", "en": "Save a Kitten Burgas" },
+    "charityUrl": "https://dmsbg.com/33518/poday-lapa-na-ulichna-kotk-dms-save/",
+    "certificate": "certificates/2026-09-20.jpg",
+    "certificateAlt": {
+      "bg": "Сертификат за дарение № 51651, 70 EUR, 20.09.2026",
+      "en": "Donation certificate No. 51651, 70 EUR, 20.09.2026"
+    }
+  }
+]

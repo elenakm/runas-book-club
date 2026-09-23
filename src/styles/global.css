@@ -1,0 +1,133 @@
+/* Tokens and shared styles. Measurements follow the design reference (RunaCatBookClub.dc.html). */
+:root {
+  --cream: #fcfbf1;
+  --ink: #393f4a;
+  --line-1: rgba(57, 63, 74, .14);
+  --line-2: rgba(57, 63, 74, .2);
+  --line-3: rgba(57, 63, 74, .25);
+  --gutter: clamp(20px, 4cqw, 48px);
+}
+
+/* No global border-box reset: the reference uses content-box, so max-widths exclude padding. */
+html { background: var(--cream); }
+body { margin: 0; background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+a { color: var(--ink); }
+a:hover { color: var(--ink); opacity: .75; }
+
+.root {
+  container-type: inline-size;
+  overflow-x: clip;
+  min-height: 100vh;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+}
+main { flex: 1; }
+
+.skip {
+  position: absolute; left: 12px; top: -60px; z-index: 20;
+  background: var(--ink); color: var(--cream); padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 500;
+}
+.skip:focus { top: 12px; color: var(--cream); opacity: 1; }
+
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* Type */
+.eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.h-page { font-weight: 500; font-size: clamp(40px, 5.6cqw, 72px); line-height: 1.04; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.h-section { font-weight: 500; font-size: clamp(26px, 3cqw, 36px); line-height: 1.15; margin: 0; text-wrap: balance; }
+.h-q { font-weight: 500; font-size: clamp(19px, 2.2cqw, 24px); line-height: 1.3; }
+.lead { font-size: 19px; margin: 0; text-wrap: pretty; }
+
+/* Header */
+.site-header { position: sticky; top: 0; z-index: 10; background: var(--cream); border-bottom: 1px solid var(--line-1); }
+.header-row {
+  max-width: 1200px; margin: 0 auto; padding: 12px clamp(16px, 4cqw, 48px);
+  display: flex; align-items: center; gap: 20px 32px; flex-wrap: wrap;
+}
+.header-logo { display: flex; text-decoration: none; }
+.header-logo img { width: 48px; height: 48px; display: block; }
+.nav-desktop { display: flex; gap: 6px 26px; flex-wrap: wrap; flex: 1; justify-content: flex-end; font-size: 15px; font-weight: 500; }
+.nav-desktop a { text-decoration: none; padding: 6px 0; border-bottom: 1.5px solid transparent; }
+.nav-desktop a[aria-current='page'] { border-bottom-color: var(--ink); }
+.nav-spacer { flex: 1; display: none; }
+
+.lang { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .06em; }
+.switch {
+  position: relative; display: block; width: 51px; height: 31px; border-radius: 999px; border: none; padding: 0; cursor: pointer;
+  background: rgba(57, 63, 74, .16); transition: background .2s ease;
+}
+.switch:hover { opacity: 1; }
+.switch[aria-checked='true'] { background: var(--ink); }
+.switch-knob {
+  position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: var(--cream);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 0 0 .5px rgba(0, 0, 0, .06); transition: left .2s ease;
+}
+.switch[aria-checked='true'] .switch-knob { left: 22px; }
+
+.burger {
+  all: unset; box-sizing: border-box; cursor: pointer; width: 44px; height: 44px; display: none;
+  flex-direction: column; justify-content: center; align-items: center; gap: 6px; margin-right: -8px;
+}
+.burger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform .2s ease, opacity .2s ease; }
+.burger[aria-expanded='true'] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.burger[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded='true'] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.burger:focus-visible { outline: 2px solid var(--ink); outline-offset: 0; border-radius: 4px; }
+
+.mobile-menu {
+  border-top: 1px solid var(--line-1); padding: 8px 20px 24px; display: flex; flex-direction: column;
+  background: var(--cream); height: calc(100vh - 69px); overflow-y: auto;
+}
+.mobile-menu a {
+  text-decoration: none; display: flex; justify-content: space-between; align-items: center; padding: 18px 0;
+  border-bottom: 1px solid var(--line-1); font-weight: 500; font-size: 28px; line-height: 1.2;
+}
+.mobile-menu .dot { font-size: 18px; opacity: 0; }
+.mobile-menu a[aria-current='page'] .dot { opacity: 1; }
+
+@media (max-width: 759.98px) {
+  .nav-desktop { display: none; }
+  .nav-spacer { display: block; }
+  .burger { display: flex; }
+}
+@media (min-width: 760px) {
+  .mobile-menu { display: none !important; }
+}
+
+/* Footer */
+.site-footer { border-top: 1px solid var(--line-1); }
+.footer-row {
+  max-width: 1200px; margin: 0 auto; padding: 40px var(--gutter);
+  display: flex; gap: 24px 48px; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; font-size: 15px;
+}
+.footer-brand { display: flex; gap: 16px; align-items: center; max-width: 420px; }
+.footer-brand img { width: 40px; height: 40px; flex: none; }
+.footer-brand div { display: flex; flex-direction: column; gap: 4px; }
+.footer-brand strong { font-weight: 600; }
+.footer-ig { display: inline-flex; align-self: center; width: 22px; height: 22px; color: var(--ink); opacity: .85; }
+.footer-ig:hover { opacity: 1; }
+
+/* Page shell */
+.page { margin: 0 auto; padding: clamp(48px, 7cqw, 96px) var(--gutter); display: flex; flex-direction: column; }
+.page-1120 { max-width: 1120px; }
+.page-860 { max-width: 860px; }
+
+/* Accordions (FAQ, Reports) */
+.acc-btn {
+  all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: flex;
+}
+.acc-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* Cards */
+.card-outline { border: 1px solid var(--line-3); border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

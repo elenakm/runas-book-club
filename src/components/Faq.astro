@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import { T, href, type Lang } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = T[lang];
+const bg = lang === 'bg';
+
+const link = (url: string, text: string) => `<a href="${url}" style="font-weight:500">${text}</a>`;
+const rep = href(lang, 'otchet');
+const story = href(lang, 'story');
+
+// Answers are trusted, hand-written HTML (only inline links).
+const items: { q: string; a: string; open?: boolean }[] = bg
+  ? [
+      { q: 'Къде отиват даренията?', a: `Всички събрани средства отиват за местни благотворителни организации в Бургас. Например, Фондация 'Спаси коте Бургас'. Виж подробен отчет за предни издания ${link(rep, 'тук')}.` },
+      { q: 'Как да знам, че даренията ми отиват за благотворителност?', a: `Водим отчет за всички събрани средства и дарения. ${link(rep, 'Тук')} можеш да разгледаш информация за предни издания, събраните средства, организацията на която сме дарили, както и документ за всяко дарение.` },
+      { q: 'Каква част от даренията отиват за благотворителност?', a: 'Абсолютно всички дарения отиват за местни благотворителни организации. Хората, работещи по проекта са доброволци, книгите са дарени, материалите за опаковка и реклама са неща, които вече имаме (като рециклирани хартиени торбички, например). Не задържаме никаква част от средствата.' },
+      { q: 'Кои са организаторите?', a: `Ние сме приятелски кръг в Бургас с много желание да осъществяваме готини идеи. Работим по Runa’s Book Club в свободното си време. Можеш да научиш повече за нас ${link(story, 'тук')}.` },
+      { q: 'Регистрирана благотворителна организация ли сте?', a: 'Все още не. Планираме да се регистрираме, когато проектът се разрасне и имаме спонсор, който да ни помогне с разходите по регистрация и административна поддръжка на благотворителна организация.', open: true },
+      { q: 'Какви книги можеш да намериш при нас?', a: 'Книги втора ръка от различни жанрове, опаковани така, че заглавието да не се вижда. На всяка пише няколко думи които описват само жанра и настроението. За по-любопитните, ето примери за някои от книгите-изненада, които вече са намерили нов дом през инициативата: "Атомични навици" на Джеймс Клиър, "Физика на Тъгата" на Георги Господинов, "Сватбата" на Алисън Еспак, "Бъди Вода, Приятелю" на Шанън Лий. Винаги имаме разнообразие от жанрове и тематики. :)' },
+      { q: 'Какви книги можеш да дариш?', a: 'Единствените ни изисквания са да са цели, запазени, модерни книги на български или английски език. Такива, които ти би се зарадвал/а да разопаковаш. :)' },
+    ]
+  : [
+      { q: 'Where do the donations go?', a: `All funds raised go to local charities in Burgas, for example the 'Spasi Kote Burgas' foundation. See a detailed report on past editions ${link(rep, 'here')}.` },
+      { q: 'How do I know my donation reaches charity?', a: `We keep a record of all funds raised and donations made. ${link(rep, 'Here')} you can find details of past editions, the amounts raised, the charity we donated to, and proof of each donation.` },
+      { q: 'How much of my donation goes to charity?', a: 'Every single donation goes to local charities. The people behind the project are volunteers, the books are donated, and the wrapping and promo materials are things we already have (recycled paper bags, for example). We keep no part of the money.' },
+      { q: 'Who runs this?', a: `We're a group of friends in Burgas with a lot of enthusiasm for making fun things happen. We run Runa’s Book Club in our spare time. You can learn more about us ${link(story, 'here')}.` },
+      { q: 'Are you a registered charity?', a: 'Not yet. We plan to register once the project grows and we have a sponsor to help with the costs of registering and running a charity.', open: true },
+      { q: 'What kinds of books will I find?', a: 'Secondhand books across many genres, wrapped so the title is hidden. Each one has a few words describing only its genre and vibe. For the curious, here are some of the surprise books that have already found a new home through the initiative: "Atomic Habits" by James Clear, "The Physics of Sorrow" by Georgi Gospodinov, "The Wedding People" by Alison Espach, "Be Water, My Friend" by Shannon Lee. We always have a mix of genres and themes. :)' },
+      { q: 'What books can you donate?', a: "Our only requirements: books that are intact, in good condition, modern, and in Bulgarian or English. The kind you'd be happy to unwrap yourself. :)" },
+    ];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: items.map((i) => ({
+    '@type': 'Question',
+    name: i.q,
+    acceptedAnswer: { '@type': 'Answer', text: i.a.replace(/<[^>]+>/g, '') },
+  })),
+};
+---
+<Base lang={lang} page="faq">
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article class="page page-860 faq">
+    <div class="intro">
+      <span class="eyebrow">{t.navFaq}</span>
+      <h1 class="h-page" style="text-wrap:wrap">{bg ? 'Често задавани въпроси' : 'Frequently asked questions'}</h1>
+    </div>
+    <div class="list">
+      {items.map((it, i) => (
+        <div class="item">
+          <button type="button" class="acc-btn h-q q" aria-expanded={it.open ? 'true' : 'false'} aria-controls={`faq-${i}`} data-acc>
+            <span>{it.q}</span><span class="sign" aria-hidden="true">{it.open ? '–' : '+'}</span>
+          </button>
+          <p class="a" id={`faq-${i}`} hidden={!it.open} set:html={it.a} />
+        </div>
+      ))}
+    </div>
+  </article>
+</Base>
+
+<style>
+  .faq { gap: 40px; }
+  .intro { display: flex; flex-direction: column; gap: 24px; }
+  .list { display: flex; flex-direction: column; border-top: 1px solid var(--line-3); }
+  .item { border-bottom: 1px solid var(--line-3); }
+  .q { justify-content: space-between; gap: 24px; padding: 24px 0; }
+  .a { margin: 0 0 26px; max-width: 62ch; font-size: 18px; text-wrap: pretty; }
+</style>
+
+<script>
+  import { initAccordions } from '../scripts/accordion';
+  initAccordions();
+</script>
