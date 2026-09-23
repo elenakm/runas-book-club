@@ -1,6 +1,6 @@
 # Runa's Book Club website
 
-Bilingual (Bulgarian default, English) static site for Runa's Book Club, a volunteer-run charity book club in Burgas. Built with Astro, hosted on GitHub Pages. Every push to `main` rebuilds and deploys the site automatically (see `.github/workflows/deploy.yml`).
+Bilingual (Bulgarian default, English) static site for Runa's Book Club, a volunteer-run charity book club in Burgas. Built with Astro, hosted on Vercel at https://runasbookclub.com. Every push to `main` rebuilds and deploys the site automatically.
 
 ## Pages
 
@@ -27,6 +27,6 @@ npm install
 npm run dev
 ```
 
-## Custom domain
+## Domain
 
-In the repo on GitHub: Settings → Pages → Custom domain. Then add the DNS records at your domain registrar (see GitHub's docs, "Managing a custom domain for your GitHub Pages site") and tick "Enforce HTTPS" once the certificate is issued. The next deploy picks up the new domain for canonical URLs, hreflang and the sitemap.
+`runasbookclub.com` is registered on Vercel and attached to the Vercel project (Settings → Domains), with `www` redirecting to the bare domain. The site URL used for canonical links, hreflang and the sitemap is set in `astro.config.mjs`.
