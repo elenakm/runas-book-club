@@ -4,14 +4,72 @@ import { Image } from 'astro:assets';
 import catFace from '../assets/cat-face.png';
 import { T, META, NAV_LABEL, IG, href, pub, type Lang, type Page } from '../i18n';
 
-interface Props { lang: Lang; page: Page; }
-const { lang, page } = Astro.props;
+interface Props {
+  lang: Lang; page: Page;
+  /** Extra schema.org fields merged into this page's WebPage node (e.g. a more specific @type, mainEntity). */
+  pageSchema?: Record<string, unknown>;
+}
+const { lang, page, pageSchema } = Astro.props;
 const t = T[lang];
 const other: Lang = lang === 'bg' ? 'en' : 'bg';
 const meta = META[lang][page];
 const abs = (p: string) => new URL(p, Astro.site).href;
 const canonical = abs(href(lang, page));
 const navPages = ['story', 'otchet', 'faq', 'contact'] as const;
+
+// Structured data: one graph per page, tying the page to the site and the club.
+const PAGE_TYPE: Record<Page, string> = {
+  home: 'WebPage', story: 'AboutPage', otchet: 'CollectionPage', faq: 'FAQPage', contact: 'ContactPage',
+};
+const home = abs(href(lang, 'home'));
+const orgId = abs(href('bg', 'home')) + '#org';
+const siteId = abs(href('bg', 'home')) + '#website';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: 'Runa’s Book Club',
+      url: abs(href('bg', 'home')),
+      logo: { '@type': 'ImageObject', url: abs(catFace.src), width: catFace.width, height: catFace.height },
+      image: abs(pub('og.png')),
+      description: META.en.home.description,
+      sameAs: [IG],
+      areaServed: { '@type': 'City', name: 'Burgas', containedInPlace: { '@type': 'Country', name: 'Bulgaria' } },
+      address: { '@type': 'PostalAddress', addressLocality: 'Burgas', addressCountry: 'BG' },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': siteId,
+      name: 'Runa’s Book Club',
+      url: abs(href('bg', 'home')),
+      inLanguage: ['bg', 'en'],
+      publisher: { '@id': orgId },
+    },
+    {
+      '@type': PAGE_TYPE[page],
+      '@id': canonical + '#webpage',
+      url: canonical,
+      name: meta.title,
+      description: meta.description,
+      inLanguage: lang,
+      isPartOf: { '@id': siteId },
+      about: { '@id': orgId },
+      primaryImageOfPage: abs(pub('og.png')),
+      ...(page !== 'home' && {
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Runa’s Book Club', item: home },
+            { '@type': 'ListItem', position: 2, name: NAV_LABEL[lang][page], item: canonical },
+          ],
+        },
+      }),
+      ...pageSchema,
+    },
+  ],
+};
 ---
 <!doctype html>
 <html lang={lang}>
@@ -42,6 +100,7 @@ const navPages = ['story', 'otchet', 'faq', 'contact'] as const;
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <slot name="head" />
 </head>
 <body>

@@ -11,8 +11,37 @@ const bg = lang === 'bg';
 // Newest first, whatever order the JSON is in (dates are DD.MM.YYYY).
 const key = (d: string) => d.split('.').reverse().join('');
 const list = [...editions].sort((a, b) => key(b.date).localeCompare(key(a.date)));
+
+// Each edition as a past event, merged into the page's CollectionPage node in Base.
+const org = { '@id': new URL('/', Astro.site).href + '#org' };
+const pageSchema = {
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: list.map((e, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Event',
+        name: `Runa’s Book Club · ${e.place[lang]}`,
+        startDate: e.date.split('.').reverse().join('-'),
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        location: {
+          '@type': 'Place',
+          name: e.place[lang],
+          address: { '@type': 'PostalAddress', addressLocality: 'Burgas', addressCountry: 'BG' },
+        },
+        description: bg
+          ? `Сляпа среща с книга. Събрани ${e.amount.bg}, дарени на ${e.charity.bg}.`
+          : `Blind date with a book. Raised ${e.amount.en}, donated to ${e.charity.en}.`,
+        organizer: org,
+        isAccessibleForFree: true,
+      },
+    })),
+  },
+};
 ---
-<Base lang={lang} page="otchet">
+<Base lang={lang} page="otchet" pageSchema={pageSchema}>
   <article class="page page-1120 reports">
     <div class="intro">
       <span class="eyebrow">{t.navReports}</span>

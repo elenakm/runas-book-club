@@ -32,10 +32,8 @@ const items: { q: string; a: string; open?: boolean }[] = bg
       { q: 'What books can you donate?', a: "Our only requirements: books that are intact, in good condition, modern, and in Bulgarian or English. The kind you'd be happy to unwrap yourself. :)" },
     ];
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  inLanguage: lang,
+// Merged into the page's FAQPage node in Base.
+const pageSchema = {
   mainEntity: items.map((i) => ({
     '@type': 'Question',
     name: i.q,
@@ -43,8 +41,7 @@ const jsonLd = {
   })),
 };
 ---
-<Base lang={lang} page="faq">
-  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<Base lang={lang} page="faq" pageSchema={pageSchema}>
   <article class="page page-860 faq">
     <div class="intro">
       <span class="eyebrow">{t.navFaq}</span>
