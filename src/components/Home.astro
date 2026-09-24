@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import logoRing from '../assets/logo-ring.png';
 import logoFace from '../assets/logo-face.png';
+import storyBannerBg from '../assets/story-banner-bg.png';
+import storyBannerEn from '../assets/story-banner-en.png';
 import { T, href, type Lang } from '../i18n';
 
 interface Props { lang: Lang; }
@@ -45,6 +47,9 @@ const faqLinks = bg
         <li><span class="num">{String(i + 1).padStart(2, '0')}</span><span>{s}</span></li>
       ))}
     </ol>
+    <a class="story-banner" href={href(lang, 'story')}>
+      <Image src={bg ? storyBannerBg : storyBannerEn} alt={bg ? 'Нашата история' : 'Our story'} widths={[640, 1280]} sizes="(max-width: 640px) 100vw, 640px" />
+    </a>
   </section>
 
   <section class="cards">
@@ -103,6 +108,10 @@ const faqLinks = bg
   }
   .steps li:last-child { border-bottom: 1px solid var(--line-2); }
   .steps .num { font-size: 15px; padding-top: 5px; }
+  .story-banner { display: block; max-width: 640px; margin: clamp(32px, 4cqw, 48px) auto 0; transition: transform .2s ease; }
+  .story-banner:hover { transform: rotate(-1deg) scale(1.02); }
+  .story-banner :global(img) { display: block; width: 100%; height: auto; }
+  @media (prefers-reduced-motion: reduce) { .story-banner { transition: none; } }
 
   .cards {
     max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter) clamp(56px, 7cqw, 96px);
