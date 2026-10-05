@@ -15,11 +15,11 @@ const other: Lang = lang === 'bg' ? 'en' : 'bg';
 const meta = META[lang][page];
 const abs = (p: string) => new URL(p, Astro.site).href;
 const canonical = abs(href(lang, page));
-const navPages = ['story', 'otchet', 'faq', 'contact'] as const;
+const navPages = ['story', 'books', 'otchet', 'faq', 'contact'] as const;
 
 // Structured data: one graph per page, tying the page to the site and the club.
 const PAGE_TYPE: Record<Page, string> = {
-  home: 'WebPage', story: 'AboutPage', otchet: 'CollectionPage', faq: 'FAQPage', contact: 'ContactPage',
+  home: 'WebPage', story: 'AboutPage', books: 'CollectionPage', otchet: 'CollectionPage', faq: 'FAQPage', contact: 'ContactPage',
 };
 const home = abs(href(lang, 'home'));
 const orgId = abs(href('bg', 'home')) + '#org';

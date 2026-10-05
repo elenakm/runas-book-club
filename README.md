@@ -8,11 +8,16 @@ Bilingual (Bulgarian default, English) static site for Runa's Book Club, a volun
 |---|---|---|
 | Home | `/` | `/en/` |
 | Story | `/story/` | `/en/story/` |
+| Books | `/knigi/` | `/en/books/` |
 | Reports | `/otchet/` | `/en/reports/` |
 | FAQ | `/faq/` | `/en/faq/` |
 | Contact | `/kontakt/` | `/en/contact/` |
 
 Page content lives in `src/components/` (one file per page, both languages side by side). Shared strings, page titles and meta descriptions are in `src/i18n.ts`.
+
+## Adding a book cover to Books
+
+Save the cover in `src/assets/books/`, then add it to the `covers` list at the top of `src/components/Books.astro` with its title and author for the alt text. Covers are shown at 2:3 and cropped to fill, so very wide covers may lose their edges.
 
 ## Adding a new edition to Reports
 

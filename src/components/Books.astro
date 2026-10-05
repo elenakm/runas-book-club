@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { T, type Lang } from '../i18n';
+
+import bookThief from '../assets/books/the-book-thief.jpg';
+import basquiat from '../assets/books/basquiat.jpg';
+import braveNewWorld from '../assets/books/brave-new-world.jpg';
+import karamazov from '../assets/books/the-brothers-karamazov.jpg';
+import confidence from '../assets/books/the-confidence-solution.jpg';
+import funds from '../assets/books/girls-just-wanna-have-funds.jpg';
+import soundFury from '../assets/books/the-sound-and-the-fury.jpg';
+import lichtenstein from '../assets/books/lichtenstein.jpg';
+import catcher from '../assets/books/catcher-in-the-rye-bg.jpg';
+import atomic from '../assets/books/atomic-habits-bg.jpg';
+import beWater from '../assets/books/be-water-my-friend-bg.jpg';
+import verity from '../assets/books/verity-bg.jpg';
+import rocks from '../assets/books/life-in-the-rocks-bg.jpg';
+import zodiac from '../assets/books/zodiac-of-old-bulgarians-bg.jpg';
+import thrones from '../assets/books/game-of-thrones-bg.jpg';
+import konbini from '../assets/books/convenience-store-woman-bg.jpg';
+import keeper from '../assets/books/keeper-of-female-power-bg.jpg';
+import badDays from '../assets/books/guide-for-bad-days-bg.jpg';
+import saybi from '../assets/books/saybievata-nevesta-bg.jpg';
+import wedding from '../assets/books/the-wedding-bg.jpg';
+import seneca from '../assets/books/best-of-seneca-bg.jpg';
+import courage from '../assets/books/courage-to-be-disliked-bg.jpg';
+import sorrow from '../assets/books/physics-of-sorrow-bg.jpg';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = T[lang];
+const bg = lang === 'bg';
+
+// Alt text is the title and author as printed on the cover.
+const covers = [
+  { src: bookThief, bg: '„Крадецът на книги“, Маркъс Зузак', en: 'The Book Thief by Markus Zusak' },
+  { src: basquiat, bg: '„Basquiat“, Леонхард Емерлинг', en: 'Basquiat by Leonhard Emmerling' },
+  { src: braveNewWorld, bg: '„Прекрасният нов свят“, Олдъс Хъксли', en: 'Brave New World by Aldous Huxley' },
+  { src: karamazov, bg: '„Братя Карамазови“, Фьодор Достоевски', en: 'The Brothers Karamazov by Fyodor Dostoyevsky' },
+  { src: confidence, bg: '„The Confidence Solution“, Клои Бротъридж', en: 'The Confidence Solution by Chloe Brotheridge' },
+  { src: funds, bg: '„Girls Just Wanna Have Funds“, Female Invest', en: 'Girls Just Wanna Have Funds by the founders of Female Invest' },
+  { src: soundFury, bg: '„Шумът и яростта“, Уилям Фокнър', en: 'The Sound and the Fury by William Faulkner' },
+  { src: lichtenstein, bg: '„Lichtenstein“, Джанис Хендриксън', en: 'Lichtenstein by Janis Hendrickson' },
+  { src: catcher, bg: '„Спасителят в ръжта“, Дж. Д. Селинджър', en: 'The Catcher in the Rye by J. D. Salinger (Bulgarian edition)' },
+  { src: atomic, bg: '„Атомни навици“, Джеймс Клиър', en: 'Atomic Habits by James Clear (Bulgarian edition)' },
+  { src: beWater, bg: '„Бъди вода, приятелю“, Шанън Лий', en: 'Be Water, My Friend by Shannon Lee (Bulgarian edition)' },
+  { src: verity, bg: '„Верити“, Колийн Хувър', en: 'Verity by Colleen Hoover (Bulgarian edition)' },
+  { src: rocks, bg: '„Живот в скалите“, Мария Лалева', en: 'Zhivot v skalite by Maria Laleva' },
+  { src: zodiac, bg: '„Зодиакът на старите българи“', en: 'The Zodiac of the Old Bulgarians' },
+  { src: thrones, bg: '„Игра на тронове“, Джордж Р. Р. Мартин', en: 'A Game of Thrones by George R. R. Martin (Bulgarian edition)' },
+  { src: konbini, bg: '„Жената конбини“, Саяка Мурата', en: 'Convenience Store Woman by Sayaka Murata (Bulgarian edition)' },
+  { src: keeper, bg: '„Пазителката на женската сила“, Лариса Ренар', en: 'Pazitelkata na zhenskata sila by Larisa Renar' },
+  { src: badDays, bg: '„Ръководство за лоши дни“, Евелине Хелминк', en: 'A Guide for Bad Days by Eveline Helmink (Bulgarian edition)' },
+  { src: saybi, bg: '„Сайбиевата невеста“, Боян Боев', en: 'Saybievata nevesta by Boyan Boev' },
+  { src: wedding, bg: '„Сватбата“, Алисън Еспак', en: 'The Wedding People by Alison Espach (Bulgarian edition)' },
+  { src: seneca, bg: '„Най-доброто от Сенека“', en: 'The Best of Seneca (Bulgarian edition)' },
+  { src: courage, bg: '„Смелостта да не те харесват“, Ичиро Кишими и Фумитаке Кога', en: 'The Courage to Be Disliked by Ichiro Kishimi and Fumitake Koga (Bulgarian edition)' },
+  { src: sorrow, bg: '„Физика на тъгата“, Георги Господинов', en: 'The Physics of Sorrow by Georgi Gospodinov' },
+];
+---
+<Base lang={lang} page="books">
+  <article class="page page-1120 books">
+    <div class="intro">
+      <span class="eyebrow">{t.navBooks}</span>
+      <h1 class="h-page">{bg ? 'Какви книги ще откриеш при нас?' : 'What books can you find at our stalls?'}</h1>
+      <p class="lead" style="max-width:56ch">{bg
+        ? 'Няма да разкриваме какво сме ви подготвили за следващите издания, но ето примери за книги, на които вече сме намерили дом.'
+        : 'We’re not giving away what we have in store for future editions, but here are some examples of books we’ve already found new homes for.'}</p>
+    </div>
+
+    <ul class="wall" role="list">
+      {covers.map((c, i) => (
+        <li>
+          <Image src={c.src} alt={bg ? c.bg : c.en} widths={[220, 440]}
+                 sizes="(max-width: 480px) calc(50vw - 28px), (max-width: 760px) calc(33vw - 24px), 200px"
+                 loading={i < 8 ? 'eager' : 'lazy'} />
+        </li>
+      ))}
+    </ul>
+  </article>
+</Base>
+
+<style>
+  .books { gap: clamp(40px, 5cqw, 64px); }
+  .intro { display: flex; flex-direction: column; gap: 28px; }
+
+  .wall {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(140px, calc(50% - 8px)), 1fr));
+    gap: clamp(16px, 2.4cqw, 28px);
+  }
+  .wall :global(img) {
+    display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover;
+    border-radius: 3px; box-shadow: 0 1px 2px rgba(57, 63, 74, .12), 0 6px 18px rgba(57, 63, 74, .10);
+  }
+</style>

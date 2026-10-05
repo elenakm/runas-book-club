@@ -1,11 +1,11 @@
 export type Lang = 'bg' | 'en';
-export type Page = 'home' | 'story' | 'otchet' | 'faq' | 'contact';
+export type Page = 'home' | 'story' | 'books' | 'otchet' | 'faq' | 'contact';
 
-export const PAGES: Page[] = ['home', 'story', 'otchet', 'faq', 'contact'];
+export const PAGES: Page[] = ['home', 'story', 'books', 'otchet', 'faq', 'contact'];
 
 const SLUG: Record<Lang, Record<Page, string>> = {
-  bg: { home: '', story: 'story', otchet: 'otchet', faq: 'faq', contact: 'kontakt' },
-  en: { home: '', story: 'story', otchet: 'reports', faq: 'faq', contact: 'contact' },
+  bg: { home: '', story: 'story', books: 'knigi', otchet: 'otchet', faq: 'faq', contact: 'kontakt' },
+  en: { home: '', story: 'story', books: 'books', otchet: 'reports', faq: 'faq', contact: 'contact' },
 };
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -27,7 +27,7 @@ export const IG = 'https://instagram.com/runas.bookclub';
 export const T = {
   bg: {
     prevPhoto: 'Предишна снимка', nextPhoto: 'Следваща снимка', menuLabel: 'Меню',
-    navStory: 'История', navReports: 'Отчет', navFaq: 'Въпроси', navContact: 'Контакт',
+    navStory: 'История', navBooks: 'Книги', navReports: 'Отчет', navFaq: 'Въпроси', navContact: 'Контакт',
     seeReports: 'Виж Отчет', faqShort: 'Въпроси', allQuestions: 'Всички въпроси',
     fDate: 'Дата', fPlace: 'Място', fAmount: 'Събрани', fCharity: 'Дарено на', fProof: 'Сертификат за дарение',
     tagline1: 'Избери книга на сляпо.', tagline2: 'Подкрепи добра кауза.',
@@ -35,7 +35,7 @@ export const T = {
   },
   en: {
     prevPhoto: 'Previous photo', nextPhoto: 'Next photo', menuLabel: 'Menu',
-    navStory: 'Story', navReports: 'Reports', navFaq: 'FAQ', navContact: 'Contact',
+    navStory: 'Story', navBooks: 'Books', navReports: 'Reports', navFaq: 'FAQ', navContact: 'Contact',
     seeReports: 'See Reports', faqShort: 'FAQ', allQuestions: 'All questions',
     fDate: 'Date', fPlace: 'Location', fAmount: 'Raised', fCharity: 'Donated to', fProof: 'Proof of donation',
     tagline1: 'Pick a book blindly.', tagline2: 'Back a good cause.',
@@ -44,8 +44,8 @@ export const T = {
 } as const;
 
 export const NAV_LABEL: Record<Lang, Record<Exclude<Page, 'home'>, string>> = {
-  bg: { story: T.bg.navStory, otchet: T.bg.navReports, faq: T.bg.navFaq, contact: T.bg.navContact },
-  en: { story: T.en.navStory, otchet: T.en.navReports, faq: T.en.navFaq, contact: T.en.navContact },
+  bg: { story: T.bg.navStory, books: T.bg.navBooks, otchet: T.bg.navReports, faq: T.bg.navFaq, contact: T.bg.navContact },
+  en: { story: T.en.navStory, books: T.en.navBooks, otchet: T.en.navReports, faq: T.en.navFaq, contact: T.en.navContact },
 };
 
 export const META: Record<Lang, Record<Page, { title: string; description: string }>> = {
@@ -57,6 +57,10 @@ export const META: Record<Lang, Record<Page, { title: string; description: strin
     story: {
       title: 'История · Runa’s Book Club',
       description: 'Как една събота с прочетени книги и хартиени пликове стана Runa’s Book Club, благотворителен книжен клуб в Бургас.',
+    },
+    books: {
+      title: 'Книги · Runa’s Book Club',
+      description: 'Примери за книги втора ръка, които вече намериха нов дом чрез Runa’s Book Club в Бургас: класики, романи, книги за изкуство и лично развитие.',
     },
     otchet: {
       title: 'Отчет · Runa’s Book Club',
@@ -79,6 +83,10 @@ export const META: Record<Lang, Record<Page, { title: string; description: strin
     story: {
       title: 'Story · Runa’s Book Club',
       description: 'How one Saturday, a stack of read books and some paper bags turned into Runa’s Book Club, a charity book club in Burgas.',
+    },
+    books: {
+      title: 'Books · Runa’s Book Club',
+      description: 'Examples of secondhand books that have already found new homes through Runa’s Book Club in Burgas: classics, novels, art books and self-help.',
     },
     otchet: {
       title: 'Reports · Runa’s Book Club',
