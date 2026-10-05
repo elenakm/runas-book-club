@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import elenaBg from '../assets/elena-runa-bg.png';
 import elenaEn from '../assets/elena-runa-en.png';
+import mihaelaBg from '../assets/mihaela-collage-bg.png';
+import mihaelaEn from '../assets/mihaela-collage-en.png';
 import p1 from '../assets/story/01-books.png';
 import p2 from '../assets/story/02-wrapped.png';
 import p3 from '../assets/story/03-labels.png';
@@ -70,15 +72,17 @@ const total = String(photos.length).padStart(2, '0');
       </div>
     </div>
 
-    <div class="block">
+    <div class="block team">
       <div class="who">
         <h2 class="h-section">{bg ? 'Кой стои зад проекта' : 'Who runs this'}</h2>
         <p class="p18" style="max-width:52ch">{bg
-          ? 'Проектът е започнат от Елена Маринова, с помощта на приятели и Руна, разбира се. ;)'
-          : 'Started by Elena Marinova, with help from friends and Runa, of course. ;)'}</p>
+          ? 'Проектът е започнат от Елена Маринова и Михаела Иванова, с помощта на Руна, разбира се. ;)'
+          : 'Started by Elena Marinova and Michaela Ivanova, with help from Runa, of course. ;)'}</p>
       </div>
-      <div class="founder">
+      <div class="founders">
         <Image src={bg ? elenaBg : elenaEn} alt={bg ? 'Елена и котката Руна' : 'Elena and Runa the cat'}
+               widths={[440, 880]} sizes="(max-width: 480px) calc(100vw - 40px), 440px" />
+        <Image src={bg ? mihaelaBg : mihaelaEn} alt={bg ? 'Михаела' : 'Michaela'}
                widths={[440, 880]} sizes="(max-width: 480px) calc(100vw - 40px), 440px" />
       </div>
     </div>
@@ -124,8 +128,9 @@ const total = String(photos.length).padStart(2, '0');
   }
   .who { display: flex; flex-direction: column; gap: 20px; }
   .p18 { margin: 0; font-size: 18px; }
-  .founder { justify-self: center; width: 100%; max-width: 440px; }
-  .founder :global(img) { display: block; width: 100%; height: auto; }
+  .team { display: flex; flex-direction: column; }
+  .founders { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; }
+  .founders :global(img) { display: block; width: 100%; max-width: 440px; height: auto; }
 </style>
 
 <script>
