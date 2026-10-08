@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import SocialFeed from './SocialFeed.astro';
 import logoRing from '../assets/logo-ring.png';
 import logoFace from '../assets/logo-face.png';
 import storyBannerBg from '../assets/story-banner-bg.png';
@@ -50,6 +51,7 @@ const faqLinks = bg
     <a class="story-banner" href={href(lang, 'story')}>
       <Image src={bg ? storyBannerBg : storyBannerEn} alt={bg ? 'Нашата история' : 'Our story'} widths={[640, 1280]} sizes="(max-width: 640px) 100vw, 640px" />
     </a>
+    <div class="feed"><SocialFeed /></div>
   </section>
 
   <section class="cards">
@@ -112,6 +114,7 @@ const faqLinks = bg
   .story-banner:hover { transform: rotate(-1deg) scale(1.02); }
   .story-banner :global(img) { display: block; width: 100%; height: auto; }
   @media (prefers-reduced-motion: reduce) { .story-banner { transition: none; } }
+  .feed { margin-top: clamp(40px, 5cqw, 64px); }
 
   .cards {
     max-width: 1200px; margin: 0 auto; padding: 0 var(--gutter) clamp(56px, 7cqw, 96px);

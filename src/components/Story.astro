@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import SocialFeed from './SocialFeed.astro';
 import elenaBg from '../assets/elena-runa-bg.png';
 import elenaEn from '../assets/elena-runa-en.png';
 import mihaelaBg from '../assets/mihaela-collage-bg.png';
@@ -93,6 +94,8 @@ const total = String(photos.length).padStart(2, '0');
         ? 'Част от книгите са от личната библиотека на основателите. Други са дарени от наши близки и познати, а след първото издание, кръгът ни от дарители се разшири.'
         : 'Some of the books come from the founders’ own libraries. Others are donated by friends and acquaintances, and since the first edition our circle of donors has grown.'}</p>
     </div>
+
+    <SocialFeed />
   </article>
 </Base>
 

@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import SocialFeed from './SocialFeed.astro';
 import editions from '../data/editions.json';
 import { T, pub, type Lang } from '../i18n';
 
@@ -83,6 +84,13 @@ const pageSchema = {
         ? 'Резултатите от следващите издания ще бъдат публикувани тук.'
         : 'Results from future editions will be published here.'}</p>
     </div>
+
+    <div class="social">
+      <h2 class="h-section">{bg
+        ? 'Научи повече за минали събития на нашата Инстаграм страница'
+        : 'Learn more about past events on our Instagram'}</h2>
+      <SocialFeed />
+    </div>
   </article>
 </Base>
 
@@ -106,6 +114,8 @@ const pageSchema = {
   .cert { display: block; border: 1px solid var(--line-2); border-radius: 4px; overflow: hidden; background: #fff; }
   .cert img { display: block; width: 100%; height: auto; }
   .note { margin: 8px 0 0; font-size: 15px; border-top: 1px solid var(--line-2); padding-top: 16px; }
+  .social { display: flex; flex-direction: column; gap: 28px; }
+  .social h2 { margin: 0; max-width: 28ch; text-wrap: balance; }
 </style>
 
 <script>
