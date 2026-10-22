@@ -65,7 +65,10 @@ const pageSchema = {
             <div class="panel" id={`ed-${i}`} hidden>
               <dl>
                 <dt>{t.fDate}</dt><dd>{e.date}</dd>
-                <dt>{t.fPlace}</dt><dd>{e.place[lang]}</dd>
+                <dt>{t.fPlace}</dt>
+                <dd>{e.placeLink && e.place[lang].includes(e.placeLink.text)
+                  ? <Fragment>{e.place[lang].split(e.placeLink.text)[0]}<a href={e.placeLink.url} target="_blank" rel="noopener" style="text-underline-offset:3px">{e.placeLink.text}</a>{e.place[lang].split(e.placeLink.text).slice(1).join(e.placeLink.text)}</Fragment>
+                  : e.place[lang]}</dd>
                 <dt>{t.fAmount}</dt><dd>{e.amount[lang]}</dd>
                 <dt>{t.fCharity}</dt>
                 <dd><a href={e.charityUrl} target="_blank" rel="noopener" style="text-underline-offset:3px">{e.charity[lang]} ↗</a></dd>

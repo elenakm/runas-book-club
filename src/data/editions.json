@@ -22,5 +22,18 @@
       "bg": "Сертификат за дарение № 51813, 200 €, 04.10.2026",
       "en": "Donation certificate No. 51813, €200, 04.10.2026"
     }
+  },
+  {
+    "date": "17.10.2026",
+    "place": { "bg": "Less is More Есенна среща за размяна, ресторант Opera Garden Бургас", "en": "Less is More Autumn Swap Event, Restaurant Opera Garden Burgas" },
+    "placeLink": { "text": "Less is More", "url": "https://www.instagram.com/lessismoreburgas/" },
+    "amount": { "bg": "100 €", "en": "€100" },
+    "charity": { "bg": "Фондация Спаси Коте Бургас", "en": "Save a Kitten Burgas" },
+    "charityUrl": "https://dmsbg.com/33518/poday-lapa-na-ulichna-kotk-dms-save/",
+    "certificate": "certificates/2026-10-17.jpg",
+    "certificateAlt": {
+      "bg": "Сертификат за дарение № 52041, 100 €, 22.10.2026",
+      "en": "Donation certificate No. 52041, €100, 22.10.2026"
+    }
   }
 ]
